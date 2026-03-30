@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import StuffItem from '@/components/StuffItem';
 import { loggedInProtectedPage } from '@/lib/page-protection';
 import { auth } from '@/lib/auth';
+import type { ReactElement } from 'react';
 
 /** Render a list of stuff for the logged in user. */
 const ListPage = async () => {
@@ -36,9 +37,65 @@ const ListPage = async () => {
                 </tr>
               </thead>
               <tbody>
-                {stuff.map((item) => (
-                  <StuffItem key={item.id} {...item} />
-                ))}
+                interface SessionUser {
+                  email: string;
+                  id: string;
+                  name?: string | null;
+                }
+
+                interface UserSession {
+                  user: SessionUser;
+                }
+
+                interface Stuff {
+                  id: string;
+                  name: string;
+                  quantity: number;
+                  condition: string;
+                  [key: string]: any;
+                }
+
+                /** Render a list of stuff for the logged in user. */
+                const ListPage = async (): Promise<ReactElement> => {
+                  // Protect the page, only logged in users can access it.
+                  const session: UserSession | null = await auth();
+                  loggedInProtectedPage(session as UserSession | null);
+                  const owner = (session && session.user && session.user.email) || '';
+                  const stuff: Stuff[] = await prisma.stuff.findMany({
+                    where: {
+                      owner,
+                    },
+                  });
+                  // console.log(stuff);
+                  return (
+                    <main>
+                      <Container id="list" fluid className="py-3">
+                        <Row>
+                          <Col>
+                            <h1>Stuff</h1>
+                            <Table striped bordered hover>
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Quantity</th>
+                                  <th>Condition</th>
+                                  <th>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {stuff.map((item) => (
+                                  <StuffItem key={item.id} {...item} />
+                                ))}
+                              </tbody>
+                            </Table>
+                          </Col>
+                        </Row>
+                      </Container>
+                    </main>
+                  );
+                };
+
+                export default ListPage;
               </tbody>
             </Table>
           </Col>
