@@ -16,6 +16,7 @@ export const EditStuffSchema = Yup.object({
 });
 
 export interface Contact {
+  [x: string]: ReactNode;
   firstName: string;
   lastName: string;
   address: string;

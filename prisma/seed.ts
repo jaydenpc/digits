@@ -1,8 +1,8 @@
-import { PrismaClient, Role, Condition } from '@prisma/client';
+import {PrismaClient, Role, Condition } from '@prisma/client';
 import { hash } from 'bcrypt';
 import * as config from '../config/settings.development.json';
-
 const prisma = new PrismaClient();
+
 
 async function main() {
   console.log('Seeding the database');
@@ -37,7 +37,27 @@ async function main() {
       },
     });
   }
+  for (const [index, contact] of config.defaultContacts.entries()) {
+  console.log(`  Adding contact: ${contact.firstName} ${contact.lastName}`);
+
+  await prisma.contact.upsert({
+    where: { id: index },
+    update: {},
+    create: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+      owner: contact.owner,
+    },
+  });
 }
+
+
+}
+
+
 main()
   .then(() => prisma.$disconnect())
   .catch(async (e) => {
