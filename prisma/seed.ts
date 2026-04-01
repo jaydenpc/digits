@@ -37,6 +37,21 @@ async function main() {
       },
     });
   }
+  console.log('  Creating contacts...');
+
+for (const contact of config.defaultContacts) {
+  console.log(`  Adding contact: ${JSON.stringify(contact)}`);
+  await prisma.contact.create({
+    data: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+      owner: contact.owner,
+    },
+  });
+}
 }
 main()
   .then(() => prisma.$disconnect())
