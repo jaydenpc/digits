@@ -32,6 +32,40 @@ export async function addStuff(stuff: { name: string; quantity: number; owner: s
   redirect('/list');
 }
 
+export async function addContact(contact: { firstName: string; lastName: string; address: string; image: string; description: string; owner: string }) {
+  // console.log(`addContact data: ${JSON.stringify(contact, null, 2)}`);
+  await prisma.contact.create({
+    data: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+      owner: contact.owner,
+    },
+  });
+  // After adding, redirect to the list page
+  redirect('/list');
+
+}
+
+export async function editContact(contact: { id: number; firstName: string; lastName: string; address: string; image: string; description: string; owner: string }) {
+  // console.log(`editContact data: ${JSON.stringify(contact, null, 2)}`);
+  await prisma.contact.update({
+    where: { id: contact.id },
+    data: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+      owner: contact.owner,
+    },
+  });
+  // After updating, redirect to the list page
+  redirect('/list');
+}
+
 /**
  * Edits an existing stuff in the database.
  * @param stuff, an object with the following properties: id, name, quantity, owner, condition.
