@@ -4,7 +4,7 @@ import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import swal from 'sweetalert';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Contact, Stuff } from '@prisma/client';
+import { Contact } from '@prisma/client';
 import { EditContactSchema } from '@/lib/validationSchemas';
 import { editContact } from '@/lib/dbActions';
 
