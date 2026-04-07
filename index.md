@@ -10,5 +10,5 @@ The first page is the homescreen where users can see the purpose and the vision 
 The last navbar link is where users can either sign in, sign up, sign out, or change passwords for their accounts to login.
 
 ## Installation
-Digits can be located at the link: 
+Digits can be located at the link: https://jaydenpc.github.io/digits/
 
