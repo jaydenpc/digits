@@ -1,4 +1,4 @@
-<img src = "homepage.png">
+<img src = "homepage.png" alt = "home page" width = "600">
 
 ## Digits
 
